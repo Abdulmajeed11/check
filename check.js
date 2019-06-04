@@ -2,10 +2,12 @@ var MS = require("./almondStore.js");
 var RP = require("./middleware/redis.js");
 var sqlConnection =  require("./middleware/sql.js")
 var ZEN = require("./middleware/model/zenLog.js")
- 
+var RM = require("./middleware/redisManager.js")
+var RB = require("./controller/responseBuilder.js")
+
  =======AlmondStore.js===========
 
-------MS.add------
+ ------MS.add------
 
 var socket = {'abd':"ul"}
 socket.destroy = function(){
@@ -14,8 +16,7 @@ socket.destroy = function(){
 }
 
 MS.add(25,socket,false)
-MS.add(25,scoket,true)
-
+MS.add(25,socket,true)
 
 
  -------hset,hget,remove and check-------
@@ -94,6 +95,7 @@ var socket = {'abc':'def'};
 
 
  ==========Sql.js ============
+
 function callback(err,output){
 console.log(output,"---------")
     return 
@@ -105,7 +107,7 @@ sqlConnection.query("INSERT INTO customers (name, address) VALUES ('Company Inc'
 
 
 
-===========Redis.js==============
+ ===========Redis.js==============
 
 function callback(e,output){
     console.log(e,output,"---1--")
@@ -130,11 +132,63 @@ setTimeout(function(){RP.multi()},3000)
 
 
 
-===========ZenLog.js============
+ ===========ZenLog.js============
 
+//changed values (Query, Execute )
+    var query ="CREATE TABLE IF NOT EXISTS dummy (A Number, B Number, C Number)";
+    var query = "INSERT INTO dummy(A, B, C) VALUES ('1','2',3)";
+    var query = "SELECT * FROM dummy";
+
+
+ loggerPointM.execute(query,[[value],mac], { prepare:true },function(error,result){}
 
 var callback = function(error,result){
     return
 }
 
+
 ZEN.insertPing(1234,1,callback)
+
+
+ ===========RedisManager.js==================  (Didnt complete it yet)
+
+function callback(e,output){
+    console.log(e,output,"---1--")
+    return
+ }
+RP.initMaster(callback) 
+connectToClient("master", "hmset", ["test", 1], callback)
+//setTimeout(function(){RM.addPrimaryAlmond(21,2555,{'abd':"ul"})},5000)
+setTimeout(function(){RP.multi()},7000)
+
+
+
+ ==============ResponseBuilder.js===============
+
+RB.sendCode(true,{'abc':'def'})
+RB.sendCode(false,{'abc':'def'})
+
+RB.sendCodeXML(null,'<Hello></Hello>')
+RB.sendCodeXML(true,'<Hello></Hello>')
+
+RB.dynamicAlmondDelete({AlmondMAC:'2454'})
+
+RB.checkAllHash(null,{CommandType:'Hash'})
+
+RB.resetXML(true)
+RB.resetXML(false)
+
+RB.validate(true)
+RB.validate(false)
+
+RB.modeChange({AlmondMAC:'1234'})
+
+RB.nameChange({AlmondMAC:"12345"})
+
+RB.dynamicAlmondAdd({AlmondMAC:"2343"})
+
+RB.almondHelloXML(true)
+RB.almondHelloXML(false)
+
+RB.almondHelloJSON(true)
+RB.almondHelloJSON(false)
