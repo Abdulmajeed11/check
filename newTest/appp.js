@@ -2,12 +2,12 @@
 module.exports = {
 	almondHelloJSON : function(err) {
     if (err){
-        return JSON.stringify({
+        return {
             CommandType: "AlmondHelloResponse",
             Success: false,
             ReasonCode: 2,
             Reason: "No Affiliation"
-        });
+        };
     }
     else{
    var data = {
@@ -18,7 +18,7 @@ module.exports = {
     };
 
 //  return console.log(JSON.stringify(data));
-     return  JSON.stringify(data);
+     return  data;
 }
 },
     dynamicAlmondAdd : function(request) {
@@ -35,19 +35,23 @@ module.exports = {
         },
         Command: 1113
     };
-    return JSON.stringify(res);
+    return res;
 },
 
   
     affiliation : function(out, rows) {
-    rows.Payload = JSON.stringify({
+    rows.Payload = {
         CommandType: "AffiliationUserCompleteResponse",
         Success: "true",
         AlmondMAC: out.AlmondMAC,
         AlmondName: out.AlmondName,
         WifiSSID: out.WifiSSID,
         WifiPassword: out.WifiPassword
-    });
-    return rows.Payload;
+    };
+    return rows;
+},
+  almondHelloXML : function(error) {
+    if (error) return '<root><AlmondHelloResponse success="false"><ReasonCode>2</ReasonCode><Reason>No Affiliation</Reason></AlmondHelloResponse></root>';
+    return '<root><AlmondHelloResponse success="true"><Reason>Almondplus Added for connection tracking</Reason></AlmondHelloResponse></root>';
 }
 }
