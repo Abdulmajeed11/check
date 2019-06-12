@@ -53,7 +53,7 @@ var MS = require('../../almondStore.js');
       })
      it('should give the value now',function(){
         let socket = {'abd':"ul"}   
-                 socket.destroy = function(){
+        socket.destroy = function(){
         console.log("delete socket")
          delete socket;  
      }
@@ -85,22 +85,83 @@ var MS = require('../../almondStore.js');
      	})
      })
  
-        describe('MS.Remove',function(){
+       describe('MS.Remove',function(){
      	it('should give the value',function(){
          let socket = {'abd':"ul"} 
         socket.destroy = function(){
         console.log("delete socket")
          delete socket;  
      }
-     	let temp2 =  MS.hset(27,socket)
-       assert.deepEqual(temp2,undefined)
-
-     	let temp3 = MS.hget(27,socket)
-     	assert.deepEqual(temp3,{ abd: 'ul', destroy: [Function], almondMAC: 27 })
-     	
-     	let temp4 = MS.remove(socket,false)
-        assert.deepEqual(temp4,undefined)
-
+     	let temp1 =  MS.hset(27,socket)
+       assert.deepEqual(temp1,undefined)
+         })
+      it('should decrement the value',function(){
+       let temp2 = MS.increment()
+      console.log(temp2)
+      assert.deepEqual(temp2,0)
  	})
      })
+
+     describe('MS.remove',function(){
+      it('should perfrom setOffline',function(done){
+        let temp = MS.setOffline(25)
+   //     console.log(temp,'')
+        assert.deepEqual(temp,undefined)
+        })
+      })
+    
+    describe('destroy',function(){
+    	it('should destroy the socket',function(){
+        let socket = {'abd':"ul"} 
+        socket.destroy = function(){
+        console.log("delete socket")
+         delete socket;  
+         console.log(socket,"socket")       // gives: { abd: 'ul', destroy: [Function], markClose: true } 'socket'
+     }
+    	let temp = MS.destroySocket(socket)
+    	assert.deepEqual(temp,null)
+    	//assert.deepEqual(temp,undefined)
+    	})
     })
+
+    // describe('',function(){
+    // 	it('export test',function(){
+    //     let socket = {'abd':"ul"} 
+    //     socket.destroy = function(){
+    //     console.log("delete socket")
+    //      delete socket;  
+    //  }
+    // 	let temp = MS.temp(socket)
+    // 	assert.deepEqual(temp,{})
+    // 	})
+    // })
+
+    describe('MS.addAff',function(){
+      it('should perfrom addAff',function(){
+        let socket ={'abc':'def'}
+        socket.destroy = function(){
+        console.log("delete socket")
+         delete socket;  
+      //   console.log(socket,"socket")       
+     }  
+      let temp =  MS.addAff(25,socket)
+      assert.deepEqual(temp,undefined)
+      })
+      it('should give the socket value',function(){
+        let socket = {'def':'ghi'}
+        let temp = MS.addAff(25,socket)
+        let temp1 = MS.getAff(25)
+        console.log(temp,"***")
+      assert.deepEqual(temp1, { def: 'ghi' })
+      })
+    })
+    
+
+    describe('MS.check',function(){
+      it('should return values',function(){
+        var temp = MS.check(25)
+        assert.deepEqual(temp,{ AlmondMAC: 25, Server: 'A2101', Status: 0, lastEpoch: 0 })
+      })
+    })
+    })
+
